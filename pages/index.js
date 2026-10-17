@@ -39,9 +39,9 @@ export default function Home() {
         <SiteHeader />
         <main className="booking-layout">
           <section className="booking-panel" aria-labelledby="home-title">
-            <div className="eyebrow"><span className="eyebrow-dot" /> CITY RIDES · KOLKATA</div>
+            <div className="eyebrow"><span className="eyebrow-dot" /> ONE COMPLETE RIDE DEMO · KOLKATA</div>
             <h1 id="home-title">Your city.<br />Your ride.</h1>
-            <p className="intro-copy">A smoother way to get where you’re going. Set your route and explore your options.</p>
+            <p className="intro-copy">Try one complete ride experience: choose a route, select a vehicle, and finish with a saved demo receipt.</p>
 
             <div className="ride-tabs" role="group" aria-label="Ride type">
               <button className="ride-tab is-active" type="button" aria-pressed="true"><span aria-hidden="true">↗</span> Ride</button>
@@ -61,7 +61,7 @@ export default function Home() {
                 <input value={destination} onChange={event => { setDestination(event.target.value); setError('') }} placeholder="Add a destination" autoComplete="off" />
               </label>
               {error && <p className="form-error" role="alert">{error}</p>}
-              <button className="button button-dark button-wide" type="submit">See ride options <span aria-hidden="true">→</span></button>
+              <button className="button button-dark button-wide" type="submit">Start demo ride <span aria-hidden="true">→</span></button>
             </form>
 
             <div className="quick-picks">
@@ -75,7 +75,7 @@ export default function Home() {
               </div>
             </div>
 
-            <p className="demo-note" id="demo-note"><span aria-hidden="true">✳</span> A learning project — no real rides are booked.</p>
+            <p className="demo-note" id="demo-note"><span aria-hidden="true">✳</span> Demo only. A local profile saves your sample receipt; no real ride is booked.</p>
           </section>
 
           <section className="map-panel" aria-label="Map preview">
@@ -94,7 +94,7 @@ export default function Home() {
           <div className="steps-grid">
             <article className="step-card"><span className="step-number">01</span><h3>Choose your route</h3><p>Set a pickup and destination to get started.</p></article>
             <article className="step-card"><span className="step-number">02</span><h3>Compare ride options</h3><p>See sample vehicle types, arrival times and fares.</p></article>
-            <article className="step-card"><span className="step-number">03</span><h3>Review your trip</h3><p>Check the details before continuing through the demo.</p></article>
+            <article className="step-card"><span className="step-number">03</span><h3>Complete the demo</h3><p>Sign in with a local demo profile and get your sample trip receipt.</p></article>
           </div>
         </section>
         <footer className="site-footer"><span>UrbanRide <span className="footer-mark">/</span> a ride-booking concept</span><a href="#home-title">Back to top ↑</a></footer>
