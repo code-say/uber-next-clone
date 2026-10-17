@@ -35,5 +35,6 @@ Restrict the token to the deployed site’s allowed URLs in the Mapbox dashboard
 - `/` — ride landing and pickup/destination form
 - `/search` — destination suggestions
 - `/confirm` — sample vehicle comparison and trip review
+- `/login` — local demo profile sign-in used to complete a sample trip
 
-All fares, times, and destinations are illustrative. No location is sent to a ride service and no payment is processed.
+All fares, times, and destinations are illustrative. The demo profile and trip receipt are stored only in the current browser; this is not secure account authentication. No location is sent to a ride service and no payment is processed.
