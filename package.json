@@ -1,28 +1,23 @@
 {
-  "name": "uber-clone",
+  "name": "urbanride-demo",
+  "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "biome lint ."
   },
   "dependencies": {
-    "autoprefixer": "^10.4.0",
-    "mapbox-gl": "^2.6.0",
-    "next": "12.0.3",
-    "postcss": "^8.3.11",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "tailwindcss": "^2.2.19"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/code-say/uber-next-clone.git"
+    "mapbox-gl": "3.33.0",
+    "next": "16.4.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   },
   "devDependencies": {
-    "eslint": "7.32.0",
-    "eslint-config-next": "12.0.3",
-    "tailwind-styled-components": "^2.0.3"
+    "@biomejs/biome": "2.5.15"
   }
 }

@@ -1,98 +1,60 @@
-import React from 'react'
-import tw from "tailwind-styled-components"
-import Link from "next/link"
+import { useEffect, useMemo, useState } from 'react'
+import Head from 'next/head'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
+import SiteHeader from '../components/SiteHeader'
 
-function search() {
-    return (
-        <Wrapper>
-            {/* Button Container */}
-            <ButtonContainer>
-                <Link href={"/"} passHref={true}>
-                    <BackButton 
-                    src="https://img.icons8.com/ios-filled/50/000000/left.png" 
-                    />
-                </Link>
-            </ButtonContainer>
-            {/* Input Container */}
-            <InputContainer>
-                <FromToIcons>
-                    <Circle src="https://img.icons8.com/ios-filled/50/9CA3AF/filled-circle.png" />
-                    <Line src="https://img.icons8.com/ios/50/9CA3AF/vertical-line.png"/>
-                    <Square src="https://img.icons8.com/windows/50/000000/square-full.png" />
-                </FromToIcons>
-                <InputBoxes>
-                    <Input placeholder="Enter pickup location" />
-                    <Input placeholder="Where to?" />
-                </InputBoxes>
-                <PlusIcon src="https://img.icons8.com/ios/50/000000/plus-math.png" />
-            </InputContainer>
-            {/* Saved Places */}
-            <SavedPlaces>
-                <StarIcon src="https://img.icons8.com/ios-filled/50/ffffff/star--v1.png" />
-                Saved Places
-            </SavedPlaces>
-            {/* Confirm Location */}
-            <ConfirmButtonContainer>
-                <ConfirmButton>Confirm Location</ConfirmButton>
-            </ConfirmButtonContainer>
-            
-        </Wrapper>
-    )
+const Map = dynamic(() => import('../components/Map'), { ssr: false, loading: () => <div className="map-loading" /> })
+const places = [
+  { name: 'Howrah Station', detail: 'Railway station · Howrah', icon: '↗' },
+  { name: 'New Town', detail: 'Business district · North Kolkata', icon: '⌖' },
+  { name: 'Park Street', detail: 'Restaurants & nightlife · Central Kolkata', icon: '⌖' },
+  { name: 'Netaji Subhas Chandra Bose Airport', detail: 'Airport · Dum Dum', icon: '✈' },
+]
+
+export default function Search() {
+  const router = useRouter()
+  const pickup = typeof router.query.pickup === 'string' ? router.query.pickup : 'Kolkata'
+  const [query, setQuery] = useState('')
+  const [selectedPickup, setSelectedPickup] = useState('Kolkata')
+
+  useEffect(() => {
+    if (typeof router.query.pickup === 'string') setSelectedPickup(router.query.pickup)
+  }, [router.query.pickup])
+
+  const filteredPlaces = useMemo(() => places.filter(place => `${place.name} ${place.detail}`.toLowerCase().includes(query.toLowerCase())), [query])
+
+  function chooseDestination(destination) {
+    router.push({ pathname: '/confirm', query: { pickup: selectedPickup || pickup, destination } })
+  }
+
+  return (
+    <>
+      <Head><title>Choose a destination · UrbanRide</title><meta name="description" content="Choose a destination and compare ride options in this Kolkata ride-booking demo." /></Head>
+      <div className="site-frame">
+        <SiteHeader />
+        <main className="subpage-layout">
+          <section className="search-panel" aria-labelledby="search-title">
+            <Link href="/" className="back-link"><span aria-hidden="true">←</span> Back to map</Link>
+            <div className="eyebrow"><span className="eyebrow-dot" /> ROUTE PLANNER</div>
+            <h1 id="search-title">Where are you headed?</h1>
+            <p className="subpage-copy">Choose a destination to preview vehicles and trip details.</p>
+            <div className="route-card">
+              <label className="route-field compact-field"><span className="route-marker pickup-marker" aria-hidden="true" /><span className="route-label">Pickup</span><input value={selectedPickup} onChange={event => setSelectedPickup(event.target.value)} aria-label="Pickup location" /></label>
+              <div className="route-connector" aria-hidden="true" />
+              <label className="route-field compact-field"><span className="route-marker dropoff-marker" aria-hidden="true" /><span className="route-label">Destination</span><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search a place" aria-label="Search destination" /></label>
+            </div>
+            <div className="places-heading"><span className="section-kicker">{query ? 'MATCHING PLACES' : 'POPULAR DESTINATIONS'}</span><span className="places-count">{filteredPlaces.length} places</span></div>
+            <div className="place-list">
+              {filteredPlaces.length ? filteredPlaces.map(place => <button key={place.name} className="place-option" type="button" onClick={() => chooseDestination(place.name)}><span className="place-icon" aria-hidden="true">{place.icon}</span><span className="place-copy"><strong>{place.name}</strong><small>{place.detail}</small></span><span className="place-arrow" aria-hidden="true">→</span></button>) : <p className="empty-places">No matching suggestions. Try a nearby area or landmark.</p>}
+            </div>
+            <p className="demo-note"><span aria-hidden="true">✳</span> Suggested places are demo data. No ride request is sent.</p>
+          </section>
+          <section className="map-panel subpage-map" aria-label="Map preview"><Map /><div className="map-top-card"><span className="live-dot" /> <span>ROUTE PREVIEW</span><span className="map-weather">Kolkata · India</span></div><div className="map-bottom-card"><div className="map-bottom-icon" aria-hidden="true">⌖</div><div><strong>{selectedPickup || 'Kolkata'}</strong><span>Pickup point · edit above</span></div><span className="map-bottom-arrow" aria-hidden="true">···</span></div></section>
+        </main>
+        <footer className="site-footer"><span>UrbanRide <span className="footer-mark">/</span> a ride-booking concept</span><Link href="/">Cancel trip setup</Link></footer>
+      </div>
+    </>
+  )
 }
-
-export default search
-
-
-const Wrapper = tw.div`
-bg-gray-200 h-screen
-`
-
-const ButtonContainer = tw.div`
-bg-white px-4
-`
-
-const BackButton = tw.img`
-h-12 cursor-pointer
-`
-
-const InputContainer = tw.div`
-bg-white flex items-center px-4 mb-2
-`
-const FromToIcons = tw.div`
-w-10 flex flex-col mr-2 items-center
-`
-
-const Circle = tw.img `
-h-2.5
-`
-
-const Line = tw.img`
-h-10
-`
-const Square = tw.img`
-h-3
-`
-
-const InputBoxes = tw.div`
-flex flex-col flex-1 
-`
-
-const Input = tw.input`
-h-10 bg-gray-200 my-2 rounded-2 p-2 outline-none border-none
-`
-const PlusIcon = tw.img`
-w-10 h-10 bg-gray-200 rounded-full ml-3
-`
-const SavedPlaces = tw.div`
-flex items-center bg-white px-4 py-2
-`
-const StarIcon = tw.img`
-bg-gray-400 w-10 h-10 p-2 rounded-full mr-2
-` 
-
-const ConfirmButtonContainer = tw.div`
-flex p-3 cursor-pointer
-`
-const ConfirmButton = tw.button`
-bg-black text-white flex-1 h-12
-`
