@@ -1,4 +1,4 @@
-# UrbanRide
+## UrbanRide
 
 A responsive ride-booking concept built with Next.js and React. The project demonstrates a route-selection flow, destination suggestions, sample ride options and an optional Mapbox map. It does not connect to a ride provider or book real trips.
 
